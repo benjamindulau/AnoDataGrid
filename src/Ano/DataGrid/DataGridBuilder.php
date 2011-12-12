@@ -5,6 +5,7 @@ namespace Ano\DataGrid;
 use Ano\DataGrid\Column\ColumnTypeInterface;
 use Ano\DataGrid\Exception\DataGridException;
 use Ano\DataGrid\Exception\UnexpectedTypeException;
+use Ano\DataGrid\Column\Column;
 
 class DataGridBuilder implements DataGridBuilderInterface
 {
@@ -51,15 +52,16 @@ class DataGridBuilder implements DataGridBuilderInterface
     /**
      * {@inheritDoc}
      */
-    public function addColumn($name, $columnType = null, array $options = array())
+    public function addColumn($name, $columnType = null, $propertyPath = null, array $options = array())
     {
         if (null !== $columnType && !is_string($columnType) && !$columnType instanceof ColumnTypeInterface) {
             throw new UnexpectedTypeException($columnType, 'string or Ano\DataGrid\Column\ColumnTypeInterface');
         }
 
         $this->columns[$name] = array(
-            'columnType' => $columnType,
-            'options'    => $options,
+            'columnType'   => $columnType,
+            'propertyPath' => $propertyPath,
+            'options'      => $options,
         );
 
         return $this;
@@ -102,7 +104,13 @@ class DataGridBuilder implements DataGridBuilderInterface
      */
     public function getDataGrid()
     {
-        $dataGrid = new DataGrid($this->columns);
+        $columns = array();
+        foreach($this->columns as $name => $column) {
+            $type = $this->getDataGridFactory()->getColumnType($column['columnType']);
+            $columns[] = new Column($name, $type, $column['propertyPath']);
+        }
+
+        $dataGrid = new DataGrid($columns);
 
         return $dataGrid;
     }

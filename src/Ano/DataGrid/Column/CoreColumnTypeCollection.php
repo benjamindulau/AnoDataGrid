@@ -5,7 +5,7 @@ namespace Ano\DataGrid\Column;
 use Ano\DataGrid\Exception\DataGridException;
 use Ano\DataGrid\Exception\UnexpectedTypeException;
 
-class CoreTypeCollection extends AbstractColumnTypeCollection
+class CoreColumnTypeCollection extends AbstractColumnTypeCollection
 {
     public function registerColumnTypes()
     {

@@ -14,11 +14,6 @@ interface ColumnTypeInterface
     public function buildView(DataGridView $view, DataGridInterface $dataGrid);
 
     /**
-     * @param string $name
-     */
-    public function setName($name);
-
-    /**
      * @return string
      */
     public function getName();

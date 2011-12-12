@@ -69,7 +69,7 @@ class DataGrid implements DataGridInterface
     /**
      * {@inheritDoc}
      */
-    public function setData(array $data)
+    public function setData($data)
     {
         if (!is_object($data) && !is_array($data)) {
             throw new UnexpectedTypeException($data, 'array or object');

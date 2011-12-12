@@ -2,8 +2,10 @@
 
 namespace Ano\DataGrid;
 
+use Ano\DataGrid\Exception\DataGridException;
 use Ano\DataGrid\Exception\UnexpectedTypeException;
 use Ano\DataGrid\Column\ColumnTypeCollectionInterface;
+use Ano\DataGrid\Column\ColumnTypeInterface;
 
 class DataGridFactory implements DataGridFactoryInterface
 {
@@ -12,6 +14,8 @@ class DataGridFactory implements DataGridFactoryInterface
      * @var ColumnTypeCollectionInterface[]
      */
     private $columnTypeCollections = array();
+
+    private $columnTypes = array();
 
     /**
      * Constructor
@@ -42,7 +46,20 @@ class DataGridFactory implements DataGridFactoryInterface
      */
     public function loadColumnType($name)
     {
-        // TODO: Implement loadColumnType() method.
+        $columnType = null;
+
+        foreach ($this->columnTypeCollections as $collection) {
+            if ($collection->hasColumnType($name)) {
+                $columnType = $collection->getColumnType($name);
+                break;
+            }
+        }
+
+        if (!$columnType) {
+            throw new DataGridException(sprintf('Could not load column type "%s"', $name));
+        }
+
+        $this->columnTypes[$name] = $columnType;
     }
 
     /**
@@ -50,7 +67,15 @@ class DataGridFactory implements DataGridFactoryInterface
      */
     public function getColumnType($name)
     {
-        // TODO: Implement getColumnType() method.
+        if (!is_string($name)) {
+            throw new UnexpectedTypeException($name, 'string');
+        }
+
+        if (!isset($this->columnTypes[$name])) {
+            $this->loadColumnType($name);
+        }
+
+        return $this->columnTypes[$name];
     }
 
     /**
@@ -58,7 +83,17 @@ class DataGridFactory implements DataGridFactoryInterface
      */
     public function hasColumnType($name)
     {
-        // TODO: Implement hasColumnType() method.
+        if (isset($this->columnTypes[$name])) {
+            return true;
+        }
+
+        try {
+            $this->loadColumnType($name);
+        } catch (DataGridException $e) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

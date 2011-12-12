@@ -26,11 +26,12 @@ interface DataGridBuilderInterface
      *
      * @param string              $name
      * @param ColumnTypeInterface $columnType
+     * @param string              $propertyPath
      * @param array               $options
      *
      * @return DataGridBuilderInterface Fluent interface
      */
-    public function addColumn($name, $columnType = null, array $options = array());
+    public function addColumn($name, $columnType = null, $propertyPath = null, array $options = array());
 
     /**
      * Returns a column by name.
