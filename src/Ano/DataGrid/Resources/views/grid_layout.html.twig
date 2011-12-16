@@ -1,0 +1,71 @@
+{# Widgets #}
+
+{% block text_widget %}
+{% spaceless %}
+    <span {{ block('widget_attributes') }}>{{ value }}</span>
+{% endspaceless %}
+{% endblock text_widget %}
+
+
+{# head #}
+
+{% block grid_head %}
+{% spaceless %}
+    <thead>
+        <tr>
+            {{ block('head_columns') }}
+        </tr>
+    </thead>
+{% endspaceless %}
+{% endblock grid_head %}
+
+{% block head_columns %}
+{% spaceless %}
+    {% for column in dataGrid.columns %}
+        {{ block('head_column') }}
+    {% endfor %}
+{% endspaceless %}
+{% endblock head_columns %}
+
+{% block head_column %}
+{% spaceless %}
+    <th>
+        {{ column.name|trans }}
+    </th>
+{% endspaceless %}
+{% endblock head_column %}
+
+
+{# Rows #}
+
+{% block grid_rows %}
+{% spaceless %}
+    {% for row in dataGrid %}
+        {{ grid_row(row) }}
+    {% endfor %}
+{% endspaceless %}
+{% endblock grid_rows %}
+
+{% block grid_row %}
+{% spaceless %}
+    <tr>
+        {{ block('row_columns') }}
+    </tr>
+{% endspaceless %}
+{% endblock grid_row %}
+
+{% block row_columns %}
+{% spaceless %}
+    {% for columns in dataGrid %}
+        {{ block('grid_column') }}
+    {% endfor %}
+{% endspaceless %}
+{% endblock row_columns %}
+
+{% block grid_column %}
+{% spaceless %}
+    <td>
+        {{ grid_widget(column) }}
+    </td>
+{% endspaceless %}
+{% endblock grid_column %}
