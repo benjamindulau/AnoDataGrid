@@ -3,6 +3,7 @@
 namespace Ano\DataGrid\Column;
 
 use Ano\DataGrid\DataGridInterface;
+use Ano\DataGrid\DataGridView;
 use Ano\DataGrid\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Util\PropertyPath;
 
@@ -30,6 +31,7 @@ class Column implements ColumnInterface
     public function __construct($name, ColumnTypeInterface $type, $propertyPath)
     {
         $this->setName($name);
+        $this->setType($type);
         $this->setPropertyPath($propertyPath);
     }
 
@@ -80,5 +82,20 @@ class Column implements ColumnInterface
     public function getGrid()
     {
         return $this->grid;
+    }
+
+    public function createView(DataGridView $dataGrid)
+    {
+        $view = new ColumnView($dataGrid);
+        $view
+            ->set('column', $view)
+            ->set('name', $this->getName())
+            ->set('value', 'test')
+            ->set('type', $this->getType()->getName())
+        ;
+
+        $this->getType()->buildView($view);
+
+        return $view;
     }
 }

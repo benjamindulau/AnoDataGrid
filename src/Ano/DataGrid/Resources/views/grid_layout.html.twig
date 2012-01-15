@@ -1,10 +1,10 @@
 {# Widgets #}
 
-{% block text_widget %}
+{% block grid_column_text %}
 {% spaceless %}
-    <span {{ block('widget_attributes') }}>{{ value }}</span>
+    <span>{{ value }}</span>
 {% endspaceless %}
-{% endblock text_widget %}
+{% endblock grid_column_text %}
 
 
 {# head #}
@@ -22,25 +22,25 @@
 {% block head_columns %}
 {% spaceless %}
     {% for column in dataGrid.columns %}
-        {{ block('head_column') }}
+        {{ grid_column_head(column) }}
     {% endfor %}
 {% endspaceless %}
 {% endblock head_columns %}
 
-{% block head_column %}
+{% block grid_column_head %}
 {% spaceless %}
     <th>
-        {{ column.name|trans }}
+        {{ name|trans }}
     </th>
 {% endspaceless %}
-{% endblock head_column %}
+{% endblock grid_column_head %}
 
 
 {# Rows #}
 
 {% block grid_rows %}
 {% spaceless %}
-    {% for row in dataGrid %}
+    {% for row in data %}
         {{ grid_row(row) }}
     {% endfor %}
 {% endspaceless %}
@@ -56,7 +56,7 @@
 
 {% block row_columns %}
 {% spaceless %}
-    {% for columns in dataGrid %}
+    {% for column in dataGrid.columns %}
         {{ block('grid_column') }}
     {% endfor %}
 {% endspaceless %}
@@ -65,7 +65,7 @@
 {% block grid_column %}
 {% spaceless %}
     <td>
-        {{ grid_widget(column) }}
+        {{ grid_column_body(column) }}
     </td>
 {% endspaceless %}
 {% endblock grid_column %}

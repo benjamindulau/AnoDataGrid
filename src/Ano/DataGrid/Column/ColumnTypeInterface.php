@@ -3,15 +3,11 @@
 namespace Ano\DataGrid\Column;
 
 use Ano\DataGrid\DataGridInterface;
-use Ano\DataGrid\DataGridView;
+use Ano\DataGrid\Column\ColumnView;
 
 interface ColumnTypeInterface
 {
-    /**
-     * @param DataGridView      $view
-     * @param DataGridInterface $dataGrid
-     */
-    public function buildView(DataGridView $view, DataGridInterface $dataGrid);
+    public function buildView(ColumnView $view);
 
     /**
      * @return string

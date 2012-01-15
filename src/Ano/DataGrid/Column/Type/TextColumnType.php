@@ -3,7 +3,7 @@
 namespace Ano\DataGrid\Column\Type;
 
 use Ano\DataGrid\Column\ColumnTypeInterface;
-use Ano\DataGrid\DataGridView;
+use Ano\DataGrid\Column\ColumnView;
 use Ano\DataGrid\DataGridInterface;
 
 class TextColumnType implements ColumnTypeInterface
@@ -11,9 +11,9 @@ class TextColumnType implements ColumnTypeInterface
     /**
      * {@inheritDoc}
      */
-    public function buildView(DataGridView $view, DataGridInterface $dataGrid)
+    public function buildView(ColumnView $view)
     {
-        // TODO: Implement buildView() method.
+
     }
 
     /**

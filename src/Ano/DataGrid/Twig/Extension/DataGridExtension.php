@@ -4,6 +4,8 @@ namespace Ano\DataGrid\Twig\Extension;
 
 use Ano\DataGrid\Twig\TokenParser\DataGridThemeTokenParser;
 use Ano\DataGrid\DataGridView;
+use Ano\DataGrid\Column\ColumnView;
+use Ano\DataGrid\View;
 use Ano\DataGrid\Exception\DataGridException;
 use Symfony\Component\Form\Util\FormUtil;
 
@@ -61,9 +63,38 @@ class DataGridExtension extends \Twig_Extension
     {
         return array(
             'grid_head'         => new \Twig_Function_Method($this, 'renderHead', array('is_safe' => array('html'))),
-            'grid_widget'       => new \Twig_Function_Method($this, 'renderWidget', array('is_safe' => array('html'))),
             'grid_row'          => new \Twig_Function_Method($this, 'renderRow', array('is_safe' => array('html'))),
+            'grid_rows'         => new \Twig_Function_Method($this, 'renderRows', array('is_safe' => array('html'))),
+
+            'grid_column_head'       => new \Twig_Function_Method($this, 'renderColumnHead', array('is_safe' => array('html'))),
+            'grid_column_body'       => new \Twig_Function_Method($this, 'renderColumnBody', array('is_safe' => array('html'))),
         );
+    }
+
+    /**
+     * Renders column head for the view.
+     *
+     * @param ColumnView $view      The view to render
+     * @param array      $variables An array of variables
+     *
+     * @return string The html markup
+     */
+    public function renderColumnHead(ColumnView $view, array $variables = array())
+    {
+        return $this->render($view, 'column_head', $variables);
+    }
+
+    /**
+     * Renders column body.
+     *
+     * @param ColumnView $view      The view to render
+     * @param array      $variables An array of variables
+     *
+     * @return string The html markup
+     */
+    public function renderColumnBody(ColumnView $view, array $variables = array())
+    {
+        return $this->render($view, 'column_' . $view->get('type'), $variables);
     }
 
     /**
@@ -92,25 +123,9 @@ class DataGridExtension extends \Twig_Extension
         return $this->render($view, 'row', $variables);
     }
 
-    /**
-     * Renders the HTML for a given view
-     *
-     * Example usage in Twig:
-     *
-     *     {{ grid_widget(view) }}
-     *
-     * You can pass options during the call:
-     *
-     *     {{ grid_widget(view, {'attr': {'class': 'foo'}}) }}
-     *
-     * @param DataGridView    $view      The view to render
-     * @param array           $variables Additional variables passed to the template
-     *
-     * @return string The html markup
-     */
-    public function renderWidget(DataGridView $view, array $variables = array())
+    public function renderRows(DataGridView $view, array $variables = array())
     {
-        return $this->render($view, 'widget', $variables);
+        return $this->render($view, 'rows', $variables);
     }
 
     /**
@@ -122,15 +137,15 @@ class DataGridExtension extends \Twig_Extension
      * 3. the type name is recursively replaced by the parent type name until a
      *    corresponding block is found
      *
-     * @param DataGridView  $view       The data grid view
-     * @param string        $section    The section to render (i.e. 'row', 'widget', 'label', ...)
-     * @param array         $variables  Additional variables
+     * @param View     $view       The data grid view
+     * @param string   $section    The section to render (i.e. 'row', 'widget', 'label', ...)
+     * @param array    $variables  Additional variables
      *
      * @return string The html markup
      *
      * @throws DataGridException if no template block exists to render the given section of the view
      */
-    protected function render(DataGridView $view, $section, array $variables = array())
+    protected function render(View $view, $section, array $variables = array())
     {
         if (null === $this->template) {
             $this->template = reset($this->resources);
@@ -140,7 +155,7 @@ class DataGridExtension extends \Twig_Extension
         }
 
         $rendering = 'grid_' . $section;
-        $blocks = $this->getBlocks($view);
+        $blocks = $this->getBlocks($view->get('dataGrid'));
 
         if (isset($blocks[$rendering])) {
 

@@ -9,7 +9,9 @@ use Ano\DataGrid\Column\Column;
 
 class DataGridBuilder implements DataGridBuilderInterface
 {
-    /* @var string */
+    /**
+     * @var string
+     */
     protected $name;
 
     /**
@@ -18,7 +20,15 @@ class DataGridBuilder implements DataGridBuilderInterface
      */
     protected $factory;
 
-    /* @var array */
+    /**
+     * Key-value store for arbitrary attributes attached to the form
+     * @var array
+     */
+    protected $attributes = array();
+
+    /**
+     * @var array
+     */
     private $columns = array();
 
     /**

@@ -92,11 +92,14 @@ class DataGrid implements DataGridInterface
         $view = new DataGridView();
 
         foreach($this->columns as $column) {
-//            $view = $column->buildView($view);
-            $view->addColumn($column->getName(), $column);
+            $columnView = $column->createView($view);
+            $view->addColumn($column->getName(), $columnView);
         }
 
-        $view->set('dataGrid', $view);
+        $view
+            ->set('dataGrid', $view)
+            ->set('data', $this->getData())
+        ;
 
         return $view;
     }
