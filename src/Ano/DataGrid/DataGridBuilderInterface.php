@@ -24,14 +24,13 @@ interface DataGridBuilderInterface
      * Adds a new column to the data grid. A column must have a unique name within
      * the data grid. Otherwise the existing column is overwritten.
      *
-     * @param string              $name
-     * @param ColumnTypeInterface $columnType
-     * @param string              $propertyPath
-     * @param array               $options
+     * @param string                     $name
+     * @param ColumnTypeInterface|string $columnType
+     * @param array                      $options
      *
      * @return DataGridBuilderInterface Fluent interface
      */
-    public function addColumn($name, $columnType = null, $propertyPath = null, array $options = array());
+    public function addColumn($name, $columnType = null, array $options = array());
 
     /**
      * Returns a column by name.

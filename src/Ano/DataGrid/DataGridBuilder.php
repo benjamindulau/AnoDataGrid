@@ -62,7 +62,7 @@ class DataGridBuilder implements DataGridBuilderInterface
     /**
      * {@inheritDoc}
      */
-    public function addColumn($name, $columnType = null, $propertyPath = null, array $options = array())
+    public function addColumn($name, $columnType = null, array $options = array())
     {
         if (null !== $columnType && !is_string($columnType) && !$columnType instanceof ColumnTypeInterface) {
             throw new UnexpectedTypeException($columnType, 'string or Ano\DataGrid\Column\ColumnTypeInterface');
@@ -70,7 +70,6 @@ class DataGridBuilder implements DataGridBuilderInterface
 
         $this->columns[$name] = array(
             'columnType'   => $columnType,
-            'propertyPath' => $propertyPath,
             'options'      => $options,
         );
 
@@ -117,7 +116,7 @@ class DataGridBuilder implements DataGridBuilderInterface
         $columns = array();
         foreach($this->columns as $name => $column) {
             $type = $this->getDataGridFactory()->getColumnType($column['columnType']);
-            $columns[] = new Column($name, $type, $column['propertyPath']);
+            $columns[] = new Column($name, $type, $column['options']);
         }
 
         $dataGrid = new DataGrid($columns);

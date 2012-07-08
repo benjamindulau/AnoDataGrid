@@ -41,4 +41,9 @@ interface DataGridInterface
      * @return object|array
      */
     public function getData();
+
+    /**
+     * @return DataGridView
+     */
+    public function createView();
 }

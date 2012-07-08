@@ -8,7 +8,7 @@ use Ano\DataGrid\Exception\DataGridException;
 
 class DataGrid implements DataGridInterface
 {
-    /* @var ColumnInterface[] */
+    /* @var array|ColumnInterface[] */
     protected $columns;
 
     /* @var array|object */
@@ -56,7 +56,7 @@ class DataGrid implements DataGridInterface
     }
 
     /**
-     * @param ColumnInterface[] $columns
+     * @param array|ColumnInterface[] $columns
      */
     public function setColumns(array $columns)
     {
@@ -87,6 +87,9 @@ class DataGrid implements DataGridInterface
         return $this->data;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function createView()
     {
         $view = new DataGridView();
