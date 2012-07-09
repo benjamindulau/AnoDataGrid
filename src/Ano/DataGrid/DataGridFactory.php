@@ -36,9 +36,12 @@ class DataGridFactory implements DataGridFactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function createBuilder($name)
+    public function createBuilder($name, $data = null)
     {
-        return new DataGridBuilder($name, $this);
+        $builder = new DataGridBuilder($name, $this);
+        $builder->setData($data);
+
+        return $builder;
     }
 
     /**

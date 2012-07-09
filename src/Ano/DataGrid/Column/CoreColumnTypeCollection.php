@@ -11,6 +11,7 @@ class CoreColumnTypeCollection extends AbstractColumnTypeCollection
     {
         return array(
             new Type\TextColumnType(),
+            new Type\DateColumnType(),
         );
     }
 }

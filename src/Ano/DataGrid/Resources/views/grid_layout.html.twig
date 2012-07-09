@@ -6,6 +6,12 @@
 {% endspaceless %}
 {% endblock grid_column_text %}
 
+{% block grid_column_date %}
+{% spaceless %}
+    <span>{{ value|date(format) }}</span>
+{% endspaceless %}
+{% endblock grid_column_date %}
+
 
 {# head #}
 
@@ -36,36 +42,40 @@
 {% endblock grid_column_head %}
 
 
-{# Rows #}
+{# body #}
 
-{% block grid_rows %}
+{% block grid_body %}
 {% spaceless %}
-    {% for row in data %}
-        {{ grid_row(row) }}
+    {% for rowIndex, row in data %}
+        {{ block('grid_row') }}
     {% endfor %}
 {% endspaceless %}
-{% endblock grid_rows %}
+{% endblock grid_body %}
 
 {% block grid_row %}
 {% spaceless %}
     <tr>
-        {{ block('row_columns') }}
+        {% for column in dataGrid.columns %}
+            {{ block('grid_column') }}
+        {% endfor %}
     </tr>
 {% endspaceless %}
 {% endblock grid_row %}
 
-{% block row_columns %}
-{% spaceless %}
-    {% for column in dataGrid.columns %}
-        {{ block('grid_column') }}
-    {% endfor %}
-{% endspaceless %}
-{% endblock row_columns %}
-
 {% block grid_column %}
 {% spaceless %}
     <td>
-        {{ grid_column_body(column) }}
+        {{ grid_column_body(column, {'index': rowIndex}) }}
     </td>
 {% endspaceless %}
 {% endblock grid_column %}
+
+
+{# foot #}
+{% block grid_foot %}
+{% spaceless %}
+    <tfoot>
+        {# TODO #}
+    </tfoot>
+{% endspaceless %}
+{% endblock grid_foot %}

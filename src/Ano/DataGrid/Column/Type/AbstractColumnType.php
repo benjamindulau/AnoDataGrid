@@ -15,12 +15,11 @@ abstract class AbstractColumnType implements ColumnTypeInterface
     public function buildView(ColumnView $view, ColumnInterface $column)
     {
         $view
-            ->set('column', $view)
+            ->set('column', $column)
             ->set('name', $column->getName())
             ->set('label', $column->getOption('label', null))
             ->set('attr', $column->getOption('attr', array()))
             ->set('type', $column->getType()->getName())
-            ->set('value', '') // TODO
         ;
     }
 

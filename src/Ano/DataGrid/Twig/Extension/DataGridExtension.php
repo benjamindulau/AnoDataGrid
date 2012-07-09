@@ -63,8 +63,9 @@ class DataGridExtension extends \Twig_Extension
     {
         return array(
             'grid_head'         => new \Twig_Function_Method($this, 'renderHead', array('is_safe' => array('html'))),
+            'grid_body'         => new \Twig_Function_Method($this, 'renderRows', array('is_safe' => array('html'))),
+            'grid_foot'         => new \Twig_Function_Method($this, 'renderFoot', array('is_safe' => array('html'))),
             'grid_row'          => new \Twig_Function_Method($this, 'renderRow', array('is_safe' => array('html'))),
-            'grid_rows'         => new \Twig_Function_Method($this, 'renderRows', array('is_safe' => array('html'))),
 
             'grid_column_head'       => new \Twig_Function_Method($this, 'renderColumnHead', array('is_safe' => array('html'))),
             'grid_column_body'       => new \Twig_Function_Method($this, 'renderColumnBody', array('is_safe' => array('html'))),
@@ -111,21 +112,36 @@ class DataGridExtension extends \Twig_Extension
     }
 
     /**
-     * Renders a row for the view.
+     * Renders grid foot for the view.
      *
      * @param DataGridView $view      The view to render as a row
      * @param array        $variables An array of variables
      *
      * @return string The html markup
      */
-    public function renderRow(DataGridView $view, array $variables = array())
+    public function renderFoot(DataGridView $view, array $variables = array())
     {
-        return $this->render($view, 'row', $variables);
+        return $this->render($view, 'foot', $variables);
+    }
+
+    /**
+     * Renders a row for the view.
+     *
+     * @param int   $dataIndex  The view to render as a row
+     * @param array $variables  An array of variables
+     *
+     * @return string The html markup
+     */
+    public function renderRow($dataIndex, array $variables = array())
+    {
+        $this->loadTemplate();
+
+
     }
 
     public function renderRows(DataGridView $view, array $variables = array())
     {
-        return $this->render($view, 'rows', $variables);
+        return $this->render($view, 'body', $variables);
     }
 
     /**
@@ -147,15 +163,15 @@ class DataGridExtension extends \Twig_Extension
      */
     protected function render(View $view, $section, array $variables = array())
     {
-        if (null === $this->template) {
-            $this->template = reset($this->resources);
-            if (!$this->template instanceof \Twig_Template) {
-                $this->template = $this->environment->loadTemplate($this->template);
-            }
-        }
+        $this->loadTemplate();
 
         $rendering = 'grid_' . $section;
         $blocks = $this->getBlocks($view->get('dataGrid'));
+
+        if (isset($variables['index']) && $view instanceof ColumnView) {
+            $view->set('index', $variables['index']);
+            $value = $view->get('value');
+        }
 
         if (isset($blocks[$rendering])) {
 
@@ -167,6 +183,16 @@ class DataGridExtension extends \Twig_Extension
         throw new DataGridException(sprintf(
             'Unable to render the data grid as the following block doesn\'t exist: "%s".', $rendering
         ));
+    }
+
+    protected function loadTemplate()
+    {
+        if (null === $this->template) {
+            $this->template = reset($this->resources);
+            if (!$this->template instanceof \Twig_Template) {
+                $this->template = $this->environment->loadTemplate($this->template);
+            }
+        }
     }
 
     /**

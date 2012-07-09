@@ -32,6 +32,11 @@ class DataGridBuilder implements DataGridBuilderInterface
     private $columns = array();
 
     /**
+     * @var mixed
+     */
+    protected $data;
+
+    /**
      * Constructor.
      *
      * @param string                    $name
@@ -120,7 +125,24 @@ class DataGridBuilder implements DataGridBuilderInterface
         }
 
         $dataGrid = new DataGrid($columns);
+        $dataGrid->setData($this->getData());
 
         return $dataGrid;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setData($data = null)
+    {
+        $this->data = $data;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 }

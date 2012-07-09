@@ -9,11 +9,12 @@ interface DataGridFactoryInterface
     /**
      * Creates and returns a DataGrid instance
      *
-     * @param  string $name
+     * @param string $name
+     * @param mixed  $data
      *
      * @return DataGridBuilderInterface
      */
-    public function createBuilder($name);
+    public function createBuilder($name, $data = null);
 
     /**
      * Loads a ColumnType instance

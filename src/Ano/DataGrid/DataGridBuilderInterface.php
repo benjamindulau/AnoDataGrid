@@ -68,4 +68,17 @@ interface DataGridBuilderInterface
      */
     public function getDataGrid();
 
+    /**
+     * Data grid data
+     *
+     * @param mixed $data
+     *
+     * @return void
+     */
+    public function setData($data = null);
+
+    /**
+     * @return mixed
+     */
+    public function getData();
 }

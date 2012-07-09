@@ -39,7 +39,7 @@ interface ColumnInterface
     /**
      * @return mixed
      */
-    public function getValue();
+    public function getValue($data, $index);
 
     /**
      * @param DataGridInterface $grid

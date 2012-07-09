@@ -77,9 +77,11 @@ class Column implements ColumnInterface
         return $this->type;
     }
 
-    public function getValue()
+    public function getValue($data, $index)
     {
-        // TODO: Implement getValue() method.
+        // TODO: validate index !!
+
+        return $this->getPropertyPath()->getValue($data[$index]);
     }
 
     public function setGrid(DataGridInterface $grid)
